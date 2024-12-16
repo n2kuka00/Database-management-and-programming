@@ -1,9 +1,6 @@
 CREATE TABLE Genre (
     GenreID INT PRIMARY KEY,
-    Drama VARCHAR(50),
-    Thriller VARCHAR(50),
-    Fantasy VARCHAR(50),
-    Horror VARCHAR(50)
+    name VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE Movie (
