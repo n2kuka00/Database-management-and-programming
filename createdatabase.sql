@@ -1,6 +1,6 @@
 CREATE TABLE Genre (
     GenreID INT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL
+    Name VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE Movie (
