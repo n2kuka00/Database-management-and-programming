@@ -1,38 +1,45 @@
-CREATE TABLE Genre (
-    GenreID INT PRIMARY KEY,
-    Name VARCHAR(50) NOT NULL
+CREATE TABLE Genres (
+    genre_id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE
 );
 
-CREATE TABLE Movie (
-    MovieID INT PRIMARY KEY,
-    MovieName VARCHAR(255) NOT NULL,
-    ReleaseYear INT,
-    Genre INT,
-    Tag VARCHAR(255),
-    Review INT,
-    FOREIGN KEY (Genre) REFERENCES Genre(GenreID)
+CREATE TABLE Movies (
+    movie_id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    year INT,
+    genre_id INT,
+    FOREIGN KEY (genre_id) REFERENCES Genres(genre_id)
 );
 
-CREATE TABLE User (
-    UserID INT PRIMARY KEY,
-    Username VARCHAR(50) UNIQUE NOT NULL,
-    Password VARCHAR(50) NOT NULL,
-    YearOfBirth INT,
-    FavoriteMovie INT, 
-    FOREIGN KEY (FavoriteMovie) REFERENCES FavoriteMovie(FavoriteID)
+
+CREATE TABLE Users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL
 );
 
-CREATE TABLE Review (
-    ReviewID INT PRIMARY KEY,
-    Username VARCHAR(50),
-    Stars INT CHECK (Stars >= 1 AND Stars <= 5),
-    Text TEXT,
-    MovieID INT,
-    FOREIGN KEY (MovieID) REFERENCES Movie(MovieID)
+
+CREATE TABLE Reviews (
+    review_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES Users(user_id),
+    movie_id INT REFERENCES Movies(movie_id),
+    rating INT CHECK (rating >= 1 AND rating <= 10),
+    comment TEXT,
+    UNIQUE (user_id, movie_id)
 );
 
-CREATE TABLE FavoriteMovie (
-    FavoriteID INT PRIMARY KEY,
-    MovieID INT,
-    FOREIGN KEY (MovieID) REFERENCES Movie(MovieID)
+
+CREATE TABLE Staff (
+    staff_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    role VARCHAR(50) NOT NULL
+);
+
+
+CREATE TABLE MovieStaff (
+    movie_staff_id SERIAL PRIMARY KEY,
+    movie_id INT REFERENCES Movies(movie_id),
+    staff_id INT REFERENCES Staff(staff_id),
+    role VARCHAR(50) NOT NULL
 );
