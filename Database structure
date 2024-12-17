@@ -17,8 +17,7 @@ CREATE TABLE Users (
     username VARCHAR(50) PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
-    year_of_birth INT CHECK (year_of_birth > 1900 AND year_of_birth <= EXTRACT(YEAR FROM CURRENT_DATE)),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    year_of_birth INT CHECK (year_of_birth > 1900 AND year_of_birth <= EXTRACT(YEAR FROM CURRENT_DATE))
 );
 
 
@@ -27,8 +26,14 @@ CREATE TABLE Reviews (
     movie_title VARCHAR(255) REFERENCES Movies(movie_title),
     username VARCHAR(50) REFERENCES Users(username),
     rating DECIMAL(3, 2) CHECK (rating >= 0 AND rating <= 10),
-    review_text TEXT,
+    review_text TEXT
+);
+
+CREATE TABLE Favorites (
+    favorite_id SERIAL PRIMARY KEY,
+    username VARCHAR(50) REFERENCES Users(username) ON DELETE CASCADE,
+    movie_title VARCHAR(255) REFERENCES Movies(movie_title) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE (movie_title, username)
+    UNIQUE (username, movie_title)
 );
 
